@@ -45,11 +45,7 @@ server.post('/filmes', (req, res) => {
         "titulo": req.body.titulo,
         "pagina": req.body.pagina
     }
-
-
     console.log(data);
-
-
     res.send();
     //console.log(data)
     filmes.push(data)
@@ -63,6 +59,13 @@ server.post('/filmes', (req, res) => {
 
     res.json('Saved user')
 })
+
+
+server.delete("/filmes", (req, res)=>{
+
+})
+
+
 
 /*const cors = require('cors');
 
