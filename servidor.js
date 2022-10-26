@@ -1,11 +1,11 @@
-/*const express = require('express');
+const express = require('express');
 const server = express();
 const cors = require('cors');
 
 const fs = require("fs");
 
 server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
+var ok = server.use(express.urlencoded({ extended: true }));
 
 const filmes = require("./filmes.json")
 
@@ -18,7 +18,7 @@ server.use(cors())
     "elenco": "Tom Holland,Chris Evans,Scarlett Johansson,Robert Downey Jr"
 }];
 
-filmes.push(novoPost);
+filmes.push(novoPost);*/
 
 fs.writeFile("./filmes.json", JSON.stringify(filmes), err => {
 
@@ -40,26 +40,31 @@ server.route('/filmes').get((req, res) => res.json({
 }))
 
 server.post('/filmes', (req, res) => {
-    var data = req.body;
+    var data = {
+        "id": filmes.length + 1,
+        "titulo": req.body.titulo,
+        "pagina": req.body.pagina
+    }
+
 
     console.log(data);
 
 
     res.send();
-    //console.log(novoPost)
-    //filmes.push(novoPost)
-    //fs.writeFile("./filmes.json", JSON.stringify(filmes), err => {
+    //console.log(data)
+    filmes.push(data)
+    fs.writeFile("./filmes.json", JSON.stringify(filmes), err => {
 
-    // Checking for errors
-    //if (err) throw err;
+        // Checking for errors
+        if (err) throw err;
 
-    // console.log("Done writing"); // Success
-    //});
+        console.log("Done writing"); // Success
+    });
 
     res.json('Saved user')
-})*/
+})
 
-const cors = require('cors');
+/*const cors = require('cors');
 
 var express = require('express');
 var app = express();
@@ -83,4 +88,4 @@ app.post('/filmes', ok, function (req, res) {
 app.listen(PORT, function (err) {
     if (err) console.log(err);
     console.log("Server listening on PORT", PORT);
-});
+});*/
