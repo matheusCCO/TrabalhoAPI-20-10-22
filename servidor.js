@@ -7,7 +7,11 @@ const fs = require("fs");
 server.use(express.json());
 var ok = server.use(express.urlencoded({ extended: true }));
 
-const filmes = require("./filmes.json")
+const filmes = require("./filmes.json");
+
+//const obj = JSON.stringify(filmes);
+
+//console.log(obj);
 
 server.use(cors())
 /*const novoPost = [{
@@ -40,6 +44,8 @@ server.route('/filmes').get((req, res) => res.json({
 }))
 
 server.post('/filmes', (req, res) => {
+    // validar se a possição do Arry é igual ao id
+    // validar se o id criado ja existe
     var data = {
         "id": filmes.length + 1,
         "titulo": req.body.titulo,
@@ -54,7 +60,7 @@ server.post('/filmes', (req, res) => {
         // Checking for errors
         if (err) throw err;
 
-        console.log("Done writing"); // Success
+        console.log("Done writing"); 
     });
 
     res.json('Saved user')
@@ -62,39 +68,24 @@ server.post('/filmes', (req, res) => {
 
 
 server.delete("/filmes/:id", (req, res)=>{
-    const { id } = req.body
+    //validar uma o id com a possição do arry
+    //pois esta excluindo o id + 1
+
+    const id = req.params.id;
+    console.log(id);
     
-    const selectedItem = filmes.findIndex((item) => item.id === id)
-    currentContent.splice(selectedItem, 1)
-    writeFile(currentContent)
-    res.send(true)
-    
+    filmes.splice(id, 1);
+
+
+    fs.writeFile("./filmes.json", JSON.stringify(filmes), err => {
+
+        
+        if (err) throw err;
+
+        console.log("Done writing"); 
+        console.log(filmes);
+
+    });
+    res.send("ok")
+
 })
-
-
-
-/*const cors = require('cors');
-
-var express = require('express');
-var app = express();
-var PORT = 3000;
-var bodyParse = require('body-parser');
-var ok = bodyParse.urlencoded({ extended: false })
-app.use(cors())
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.post('/filmes', ok, function (req, res) {
-    var data = req.body;
-
-    console.log("Name: ", data.name);
-    console.log("Age: ", data.age);
-    console.log("Gender: ", data.gender);
-
-    res.send();
-});
-
-app.listen(PORT, function (err) {
-    if (err) console.log(err);
-    console.log("Server listening on PORT", PORT);
-});*/
