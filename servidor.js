@@ -61,8 +61,14 @@ server.post('/filmes', (req, res) => {
 })
 
 
-server.delete("/filmes", (req, res)=>{
-
+server.delete("/filmes/:id", (req, res)=>{
+    const { id } = req.body
+    
+    const selectedItem = filmes.findIndex((item) => item.id === id)
+    currentContent.splice(selectedItem, 1)
+    writeFile(currentContent)
+    res.send(true)
+    
 })
 
 

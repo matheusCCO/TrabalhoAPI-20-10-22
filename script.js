@@ -15,6 +15,8 @@ function lerDados() {
             conteudo += '           <th>id</th>';
             conteudo += '           <th>Titulo</th>';
             conteudo += '           <th>pagina</th>';
+            
+            
             conteudo += '       </tr>';
 
             Object.keys(obj).forEach(key => {
@@ -24,6 +26,7 @@ function lerDados() {
                 conteudo +="    <td>"+obj[key].id+"</td>";
                 conteudo +="    <td>"+obj[key].titulo+"</td>";
                 conteudo +="    <td>"+obj[key].pagina+"</td>";
+                
                 conteudo +="</tr>";
                 
                 document.getElementById("dados").innerHTML = conteudo;
@@ -61,6 +64,19 @@ function enviaDados() {
 }
 
 
-function deleta(){
+function deletar(){
+    var id = document.getElementById("id");
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+
+        }
+    }
+
+    xhttp.open("DELETE", url+'/:id='+id, true);
+    xhttp.send();
+
     
 }
