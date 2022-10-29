@@ -49,8 +49,7 @@ function enviaDados() {
         "pagina": pagina,
 
     }
-    console.log(titulo, pagina);
-    console.log(novoPost);
+
 
     let xhttp = new XMLHttpRequest()
     xhttp.open("POST", url, true)
@@ -76,7 +75,29 @@ function deletar(){
     }
 
     xhttp.open("DELETE", url+'/:id='+id, true);
-    xhttp.send();
+    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.send();    
+}
 
-    
+function mudarPag(){
+    var id = document.getElementById('Id').value;
+    var pagina = document.getElementById('Pagina').value;
+    //console.log("id"+id, "pagina"+pagina);
+   var novoUpDate = {
+        "pagina": pagina
+    }
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log("ok")
+        } else {
+            console.log(" erro")
+        }
+    }
+
+    xhttp.open("PUT", url+'/:id='+id, true);
+    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.send(JSON.stringify(novoUpDate));
 }
