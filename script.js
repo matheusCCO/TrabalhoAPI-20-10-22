@@ -9,26 +9,26 @@ function lerDados() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var obj = JSON.parse(this.responseText);
-            
+
             var conteudo = '<table border="1">';
             conteudo += '       <tr>';
             conteudo += '           <th>id</th>';
             conteudo += '           <th>Titulo</th>';
             conteudo += '           <th>pagina</th>';
-            
-            
+
+
             conteudo += '       </tr>';
 
             Object.keys(obj).forEach(key => {
-               
-                conteudo +="<tr>";
-                
-                conteudo +="    <td>"+obj[key].id+"</td>";
-                conteudo +="    <td>"+obj[key].titulo+"</td>";
-                conteudo +="    <td>"+obj[key].pagina+"</td>";
-                
-                conteudo +="</tr>";
-                
+
+                conteudo += "<tr>";
+
+                conteudo += "    <td>" + obj[key].id + "</td>";
+                conteudo += "    <td>" + obj[key].titulo + "</td>";
+                conteudo += "    <td>" + obj[key].pagina + "</td>";
+
+                conteudo += "</tr>";
+
                 document.getElementById("dados").innerHTML = conteudo;
             });
             conteudo += "</table>";
@@ -63,41 +63,43 @@ function enviaDados() {
 }
 
 
-function deletar(){
+function deletar() {
     var id = document.getElementById("id");
 
     var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function(){
+    xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
 
         }
     }
 
-    xhttp.open("DELETE", url+'/:id='+id, true);
+    xhttp.open("DELETE", url + '/:id=' + id, true);
     xhttp.setRequestHeader("Content-type", "application/json")
-    xhttp.send();    
+    xhttp.send();
 }
 
-function mudarPag(){
+function mudarPag() {
     var id = document.getElementById('Id').value;
     var pagina = document.getElementById('Pagina').value;
-    //console.log("id"+id, "pagina"+pagina);
-   var novoUpDate = {
+    console.log(url + '/' + id);
+    var novoUpDate = {
         "pagina": pagina
     }
 
     var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
             console.log("ok")
         } else {
             console.log(" erro")
         }
     }
 
-    xhttp.open("PUT", url+'/:id='+id, true);
+
+
+    xhttp.open("PUT", url + '/' + id, true);
     xhttp.setRequestHeader("Content-type", "application/json")
     xhttp.send(JSON.stringify(novoUpDate));
 }

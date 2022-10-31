@@ -8,16 +8,19 @@ server.use(express.json());
 
 const filmes = require("./filmes.json");
 
-
 server.use(cors())
 
-fs.writeFile("./filmes.json", JSON.stringify(filmes), err => {
 
-    // Checking for errors
-    if (err) throw err;
+const readFile = () => {
+    const content = fs.readFileSync('./filmes.json', 'utf-8')
+    return JSON.parse(content)
+}
 
-    console.log("Done writing"); // Success
-});
+const writeFile = (content) => {
+    const updateFile = JSON.stringify(content)
+    fs.writeFileSync('./filmes.json', updateFile, 'utf-8')
+}
+
 
 server.listen(3000, () => {
     console.log('servidor iniciado');
@@ -29,10 +32,9 @@ server.route('/filmes').get((req, res) => res.json({
 }))
 
 server.post('/filmes', (req, res) => {
-    // validar se a possição do Arry é igual ao id
-    // validar se o id criado ja existe
+
     var data = {
-        "id": filmes.length + 1,
+        "id": Math.random().toString(32).substr(2, 9),
         "titulo": req.body.titulo,
         "pagina": req.body.pagina
     }
@@ -45,38 +47,52 @@ server.post('/filmes', (req, res) => {
         // Checking for errors
         if (err) throw err;
 
-        console.log("Done writing"); 
+        console.log("Done writing");
     });
 
     res.json('Saved user')
 })
 
 
-server.delete("/filmes/:id", (req, res)=>{
-    //validar uma o id com a possição do arry
-    //pois esta excluindo o id + 1
+server.delete("/filmes/:id", (req, res) => {
+
 
     const id = req.params.id;
     console.log(id);
-    
-   // filmes.splice(id, 1);
 
-   // fs.writeFile("./filmes.json", JSON.stringify(filmes), err => {
+    filmes.splice(id, 1);
 
-       // if (err) throw err;
+    fs.writeFile("./filmes.json", JSON.stringify(filmes), err => {
 
-       // console.log("Done writing"); 
-       // console.log(filmes);
+        if (err) throw err;
 
-   // });
+        console.log("Done writing");
+        console.log(filmes);
+
+    });
     res.send("ok")
 
 })
 
 
-server.put("/filmes/:id", (req, res) =>{
-    const id = req.params.id;
-    const pagina = {"pagina": req.body.pagina};
+server.put("/filmes/:id", (req, res) => {
+    const { id } = req.params
 
-    console.log(pagina, id);
+    const { titulo, pagina } = req.body
+
+    const leJSON = readFile()
+    const selecionaItem = leJSON.findIndex((item) => item.id === id)
+
+    const { id: cId, titulo: cTitulo, pagina: cPagina, } = leJSON[selecionaItem]
+
+    const alteracao = {
+        id: cId,
+        titulo: titulo ? titulo : cTitulo,
+        pagina: pagina ? pagina : cPagina
+    }
+
+    leJSON[selecionaItem] = alteracao
+    writeFile(leJSON)
+
+    res.send(alteracao)
 })
